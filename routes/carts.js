@@ -58,12 +58,25 @@ router.get('/cart', async(req, res) => {
 router.post('/cart/products/delete', async(req, res) => {
     const { itemId } = req.body;
     const cart = await cartsRepo.getOne(req.session.cartId);
+    const existingItem = cart.items.find(item => item.id === itemId);
 
-    const items = cart.items.filter(item => item.id !== itemId);
+    //if more than one item of same id in cart, decrement quantity
+    //else remove cart item completely
+    if(existingItem.quantity > 1){
+        existingItem.quantity--;
+        await cartsRepo.update(cart.id, {
+            items: cart.items
+        });
+        res.redirect('/cart');
+    } else{
+        const items = cart.items.filter(item => item.id !== itemId);
 
-    await cartsRepo.update(req.session.cartId, { items });
+        await cartsRepo.update(req.session.cartId, { items });
 
-    res.redirect('/cart');
+        res.redirect('/cart');
+    }
+
+    
 });
 
 module.exports = router;
