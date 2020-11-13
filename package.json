@@ -20,7 +20,7 @@
     "nodemonConfig": {
         "ignore": [ "carts.json" ]
     },
-    "engine": {
+    "engines": {
         "node": "12.18.0"
     }
 }
