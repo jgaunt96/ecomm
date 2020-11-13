@@ -9,17 +9,16 @@ const cartsRouter = require('./routes/carts');
 const app = express();
 
 app.use(express.static('public'));
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(cookieSession({
-    keys: ['aoiasdsjdoihjad7adsfuihi']
-}));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+    cookieSession({
+        keys : [ 'aoiasdsjdoihjad7adsfuihi' ]
+    })
+);
 
 app.use(authRouter);
 app.use(productsRouter);
 app.use(adminProductsRouter);
 app.use(cartsRouter);
 
-
-app.listen(3000, () => {
-    console.log('app listening');
-});
+app.listen(process.env.PORT || 3000);
